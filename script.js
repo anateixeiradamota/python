@@ -1,27 +1,38 @@
-// script.js
-function verificarDesafio(desafioId) {
-    const feedbackElement = document.getElementById(`challenge${desafioId}-feedback`);
-    const code = document.getElementById(`challenge${desafioId}-code`).value;
+const keywords = ['if', 'for', 'while', 'def', 'class', 'import', 'return', 'print'];
+let currentWord = '';
 
-    let resultadoCorreto = false;
+function newGame() {
+    // Escolhe uma palavra aleatória da lista
+    currentWord = keywords[Math.floor(Math.random() * keywords.length)];
+    
+    // Esconde a palavra com underlines
+    const hiddenWord = '_ '.repeat(currentWord.length);
+    document.getElementById('display-word').textContent = hiddenWord;
+    
+    // Limpa a entrada do usuário e a mensagem de feedback
+    document.getElementById('guess-input').value = '';
+    document.getElementById('feedback-message').textContent = '';
+    
+    // Esconde o botão de nova palavra
+    document.getElementById('new-word-button').style.display = 'none';
+}
 
-    // Lógica de verificação para cada desafio
-    if (desafioId === 1) {
-        // Exemplo: Simular a verificação do desafio de soma
-        // Neste caso, você pode pedir ao usuário para escrever a resposta da função
-        // e verificar se ela está correta.
-        // Por exemplo, o usuário deve escrever 'def somar_numeros(a,b): return a+b'
-        if (code.includes("return a + b") || code.includes("return a+b")) {
-            resultadoCorreto = true;
-        }
-    }
-
-    // Atualiza a interface com base no resultado
-    if (resultadoCorreto) {
-        feedbackElement.textContent = "Parabéns! Desafio completo!";
-        feedbackElement.className = "feedback success";
+function checkGuess() {
+    const userGuess = document.getElementById('guess-input').value.toLowerCase();
+    const feedback = document.getElementById('feedback-message');
+    
+    if (userGuess === currentWord) {
+        // Se a resposta estiver correta
+        feedback.textContent = 'Parabéns, você acertou!';
+        feedback.className = 'feedback success';
+        document.getElementById('display-word').textContent = currentWord;
+        document.getElementById('new-word-button').style.display = 'block';
     } else {
-        feedbackElement.textContent = "Ops, tente novamente. A solução não está correta.";
-        feedbackElement.className = "feedback error";
+        // Se a resposta estiver errada
+        feedback.textContent = 'Ops, tente novamente.';
+        feedback.className = 'feedback error';
     }
 }
+
+// Inicia o jogo quando a página carrega
+document.addEventListener('DOMContentLoaded', newGame);
